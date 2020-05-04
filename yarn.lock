@@ -7,6 +7,11 @@
   resolved "https://registry.yarnpkg.com/@aragon/abis/-/abis-1.1.0.tgz#e94e94c57d50fd736856751b6224905e6f0e9e86"
   integrity sha512-SbdF3JkU+57N19GEENtUvs/nsjOKdK+YlG35o3qdhK8AMZO+AWZU3wb5FyezR4hHHDZfijxhzYTXGIf0zNAdPQ==
 
+"@aragon/apps-shared-minime@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@aragon/apps-shared-minime/-/apps-shared-minime-1.0.2.tgz#1388602be2b296de51e6c3712c80d669c1d2191e"
+  integrity sha512-HqvnjU4sF2swvOK3616cvuSs2sofegWd7qqT5iF0YTf9v0w/cAWoj7ZZK3TMVdsQv07HNvQjqucTGa3/qMzblA==
+
 "@aragon/buidler-aragon@^0.2.2":
   version "0.2.3"
   resolved "https://registry.yarnpkg.com/@aragon/buidler-aragon/-/buidler-aragon-0.2.3.tgz#cd8a6e63e284a313fe270d637d8137ae3b430c07"
@@ -36,6 +41,11 @@
     ethereumjs-abi "^0.6.4"
     web3-eth-abi "^1.2.1"
     web3-utils "^1.2.1"
+
+"@aragon/minime@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@aragon/minime/-/minime-1.0.0.tgz#994284b38e2ca36b5ae923f090928948041c928f"
+  integrity sha512-FU6xQXkkRfaxo0n6HEnlsizSA12Te2bghozqW9XLdDbzpC84yDeqUOQAxmrHo5yQPIezRfz7IrNzpLVL6ZBORA==
 
 "@nomiclabs/buidler-etherscan@^1.0.2":
   version "1.2.0"
