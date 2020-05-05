@@ -10,6 +10,11 @@
  * Please see AragonConfigHooks, in the plugin's types for further details on these interfaces.
  * https://github.com/aragon/buidler-aragon/blob/develop/src/types.ts#L31
  */
+let pct16
+
+let tokens, accounts
+
+const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000'
 
 module.exports = {
   // Called before a dao is deployed.
@@ -17,9 +22,33 @@ module.exports = {
 
   // Called after a dao is deployed.
   postDao: async (
-    { dao, _experimentalAppInstaller, log },
-    { web3, artifacts }
-  ) => {},
+    {
+      dao,
+      _experimentalAppInstaller,
+      log
+    },
+    { web3, artifacts },
+  ) => {
+   const bigExp = (x, y) =>
+      web3.utils
+        .toBN(x)
+        .mul(web3.utils.toBN(10).pow(web3.utils.toBN(y)))
+    pct16 = (x) => bigExp(x, 16)
+    accounts = await web3.eth.getAccounts()
+    // Deploy a minime token and mint tokens to root account
+    const minime = await _deployMinimeToken({ artifacts })
+    await minime.generateTokens(accounts[1], pct16(100))
+    log(`> Minime token deployed: ${minime.address} and minted for ${accounts[1]}`)
+    // Install a token manager instance
+    tokens = await _experimentalAppInstaller('token-manager', {
+      skipInitialize: true,
+    })
+
+    await minime.changeController(tokens.address)
+    log(`> Change minime controller to tokens app`)
+    await tokens.initialize([minime.address, true, 0])
+    log(`> Tokens app installed: ${tokens.address}`)
+  },
 
   // Called after the app's proxy is created, but before it's initialized.
   preInit: async (
@@ -31,7 +60,12 @@ module.exports = {
   postInit: async (
     { proxy, _experimentalAppInstaller, log },
     { web3, artifacts }
-  ) => {},
+  ) => {
+    // We need to create a permission for the Token Manager so it shows
+    // up on the DAO. Therefore, let's give unlimited inflational powers
+    // to the root account, because why not?
+    await tokens.createPermission('MINT_ROLE', accounts[1])
+  },
 
   // Called when the start task needs to know the app proxy's init parameters.
   // Must return an array with the proxy's init parameters.
@@ -41,4 +75,20 @@ module.exports = {
 
   // Called after the app's proxy is updated with a new implementation.
   postUpdate: async ({ proxy, log }, { web3, artifacts }) => {},
+}
+
+async function _deployMinimeToken({ artifacts }) {
+  // const MiniMeTokenFactory = await artifacts.require('MiniMeTokenFactory')
+  const MiniMeToken = await artifacts.require('MiniMeToken')
+  // const factory = await MiniMeTokenFactory.new()
+  const token = await MiniMeToken.new(
+    ZERO_ADDRESS,
+    ZERO_ADDRESS,
+    0,
+    'Issuance Token',
+    18,
+    'IST',
+    true
+  )
+  return token
 }
