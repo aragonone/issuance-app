@@ -1,37 +1,37 @@
 {
   "roles": [
     {
-      "name": "Increment the counter",
-      "id": "INCREMENT_ROLE",
+      "name": "Add a new issuance policy",
+      "id": "ADD_POLICY_ROLE",
       "params": []
     },
     {
-      "name": "Decrement the counter",
-      "id": "DECREMENT_ROLE",
+      "name": "Remove an issuance policy",
+      "id": "REMOVE_POLICY_ROLE",
       "params": []
     }
   ],
   "environments": {
     "default": {
-      "appName": "issuance-policy.aragonpm.eth",
+      "appName": "issuance.aragonpm.eth",
       "network": "rpc"
     },
     "rinkeby": {
       "registry": "0x98df287b6c145399aaa709692c8d308357bc085d",
-      "appName": "issuance-policy.aragonpm.eth",
+      "appName": "issuance.aragonpm.eth",
       "network": "rinkeby"
     },
     "staging": {
       "registry": "0xfe03625ea880a8cba336f9b5ad6e15b0a3b5a939",
-      "appName": "issuance-policy.aragonpm.eth",
+      "appName": "issuance.aragonpm.eth",
       "network": "rinkeby"
     },
     "mainnet": {
       "registry": "0x00000000000C2E074eC69A0dFb2997BA6C7d2e1e",
-      "appName": "issuance-policy.aragonpm.eth",
+      "appName": "issuance.aragonpm.eth",
       "network": "mainnet"
     }
   },
-  "appName": "issuance-policy.aragonpm.eth",
-  "path": "contracts/CounterApp.sol"
+  "appName": "issuance.aragonpm.eth",
+  "path": "contracts/Issuance.sol"
 }

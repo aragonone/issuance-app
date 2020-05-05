@@ -15,6 +15,7 @@
   },
   "dependencies": {
     "@aragon/abis": "^1.1.0",
+    "@aragon/apps-token-manager": "^2.1.0"
     "@aragon/apps-shared-minime": "^1.0.2",
     "@aragon/minime": "^1.0.0"
   },
