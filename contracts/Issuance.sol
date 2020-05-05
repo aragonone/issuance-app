@@ -42,7 +42,7 @@ contract Issuance is AragonApp {
     function initialize(TokenManager _tokenManager) public onlyInit {
         tokenManager = _tokenManager;
         token = tokenManager.token();
-        lastMintBlockNumber = block.number;
+        lastMintBlockNumber = _blockNumber();
 
         initialized();
     }
@@ -95,7 +95,7 @@ contract Issuance is AragonApp {
      * @notice Execute minting for all issuance policies
      */
     function executeIssuance() public {
-        uint256 currentBlockNumber = block.number;
+        uint256 currentBlockNumber = _blockNumber();
         uint256 elapsedBlocks = currentBlockNumber - lastMintBlockNumber; // no safe math as it assumes the block number can only increase
         if (elapsedBlocks == 0) {
             return;
@@ -129,10 +129,14 @@ contract Issuance is AragonApp {
         Policy storage policy = policies[_policyId];
         require(policy.active, ISS_UNEXISTENT_POLICY_ERROR);
 
-        return _calculateMintAmountForPolicy(policy, token.totalSupply(), block.number - lastMintBlockNumber);
+        return _calculateMintAmountForPolicy(policy, token.totalSupply(), _blockNumber() - lastMintBlockNumber);
     }
 
     function _calculateMintAmountForPolicy(Policy storage _policy, uint256 _currentSupply, uint256 _elapsedBlocks) internal view returns (uint256 amount) {
         return _elapsedBlocks.mul(_currentSupply.mul(_policy.blockInflationRate)) / PCT_BASE;
+    }
+
+    function _blockNumber() internal view returns (uint256) {
+        return block.number;
     }
 }
