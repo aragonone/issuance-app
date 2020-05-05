@@ -14,11 +14,18 @@ function normalizeInflationRate(policies) {
   }))
 }
 
+function sortPolicies(policies) {
+  return policies.sort((policyA, policyB) =>
+    Number(policyA.id) < Number(policyB.id) ? 1 : -1
+  )
+}
+
 export default function AppStateReducer(state) {
   if (state === null) {
     return { policies: [], isSyncing: true, tokenSymbol: null }
   }
 
   const normalizedPolicies = normalizeInflationRate(state.policies)
-  return { ...state, policies: normalizedPolicies }
+  const sortedPolicies = sortPolicies(normalizedPolicies)
+  return { ...state, policies: sortedPolicies }
 }

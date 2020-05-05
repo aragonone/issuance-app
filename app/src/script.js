@@ -117,7 +117,8 @@ async function newAddedPolicy(state, event) {
 
 async function newRemovedPolicy(state, event) {
   const { policyId } = event.returnValues
-  const newPolicies = await updatePolicies(state.policies, event, { policyId })
+  const { event: eventName } = event
+  const newPolicies = await updatePolicies(state.policies, eventName, { policyId })
 
   return {
     ...state,

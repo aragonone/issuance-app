@@ -1,8 +1,7 @@
-import React from 'react'
+import React, { useState, useCallback } from 'react'
 import { useViewport } from 'use-viewport'
 import { useAragonApi } from '@aragon/api-react'
 import {
-  Box,
   Button,
   ContextMenu,
   ContextMenuItem,
@@ -19,32 +18,58 @@ import {
   textStyle,
   useTheme,
 } from '@aragon/ui'
+import AddPolicyPanel from './components/AddPolicyPanel'
 
 function App() {
+  const [addPolicyPanelOpen, setAddPolicyPanelOpen] = useState(false)
   const { api, appState } = useAragonApi()
   React.useEffect(() => {
     console.log('appState', appState)
   }, [appState])
-  const { policies, isSyncing } = appState
+  const { policies, isSyncing, tokenSymbol } = appState
 
   const theme = useTheme()
   const { below } = useViewport()
 
   const compactMode = below('medium')
 
-  const handleAdd = React.useCallback(async () => {
-    const add = api
-      .addPolicy(
-        '0x8401Eb5ff34cc943f096A32EF3d5113FEbE8D4Eb',
-        '10000000000000000'
-      )
-      .toPromise()
-    console.log(add, 'add')
-  }, [api])
+  const handleAdd = React.useCallback(
+    async (beneficiary, inflationRate) => {
+      api
+        .addPolicy(
+          beneficiary,
+          inflationRate
+        )
+        .toPromise()
+    },
+    [api]
+  )
+
+  const handleExecute = useCallback(() => api.executeIssuance().toPromise(), [
+    api,
+  ])
+
+  const handleRemove = useCallback(id => api.removePolicy(id).toPromise(), [
+    api,
+  ])
+
+  const handleAddPolicyPanelOpen = useCallback(
+    () => setAddPolicyPanelOpen(true),
+    []
+  )
+  const handleAddPolicyPanelClose = useCallback(
+    () => setAddPolicyPanelOpen(false),
+    []
+  )
 
   return (
     <Main>
       {isSyncing && <SyncIndicator />}
+      <AddPolicyPanel
+        onAdd={handleAdd}
+        onClose={handleAddPolicyPanelClose}
+        opened={addPolicyPanelOpen}
+      />
       <Header
         primary={
           <div
@@ -63,7 +88,7 @@ function App() {
             </div>
             <Tag
               mode="identifier"
-              label="IST"
+              label={tokenSymbol}
               css={`
                 margin-left: ${1 * GU}px;
                 margin-top: ${0.5 * GU}px;
@@ -78,7 +103,7 @@ function App() {
               label="Execute policies"
               icon={<IconFundraising />}
               display={compactMode ? 'icon' : 'all'}
-              onClick={handleAdd}
+              onClick={handleExecute}
               css={`
                 margin-right: ${1 * GU}px;
               `}
@@ -87,16 +112,16 @@ function App() {
               mode="strong"
               label="New policy"
               icon={<IconAdd />}
-              onClick={() => api.decrement(1).toPromise()}
+              onClick={handleAddPolicyPanelOpen}
               display={compactMode ? 'icon' : 'all'}
             />
           </>
         }
       />
       <DataView
-        fields={['Beneficiary', 'Rate']}
+        fields={['Beneficiary', 'Rate', 'State']}
         entries={policies}
-        renderEntry={({ beneficiary, blockInflationRate }) => {
+        renderEntry={({ beneficiary, blockInflationRate, executed }) => {
           return [
             <IdentityBadge entity={beneficiary} />,
             <div
@@ -106,13 +131,25 @@ function App() {
             >
               {blockInflationRate}%
             </div>,
+            <div
+              css={`
+              ${textStyle('label2')}
+              color: ${executed ? theme.positive : theme.warning}
+            `}
+            >
+              {executed ? 'Executed' : 'Awaiting'}
+            </div>,
           ]
         }}
-        renderEntryActions={({ policyid }, index) => {
+        renderEntryActions={({ executed, id }) => {
+          if (executed) {
+            return null
+          }
+
           return (
             <ContextMenu>
               <ContextMenuItem
-                onClick={() => api.removePolicy(0).toPromise()}
+                onClick={() => handleRemove(id)}
                 css={`
                   color: ${theme.negative};
                 `}
