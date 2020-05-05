@@ -3,16 +3,10 @@ import ReactDOM from 'react-dom'
 import { ViewportProvider } from 'use-viewport'
 import { AragonApi } from '@aragon/api-react'
 import App from './App'
-
-const reducer = state => {
-  if (state === null) {
-    return { count: 0, isSyncing: true }
-  }
-  return state
-}
+import AppStateReducer from './app-state-reducer'
 
 ReactDOM.render(
-  <AragonApi reducer={reducer}>
+  <AragonApi reducer={AppStateReducer}>
     <ViewportProvider>
       <App />
     </ViewportProvider>

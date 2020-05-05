@@ -12,6 +12,11 @@
   resolved "https://registry.yarnpkg.com/@aragon/apps-shared-minime/-/apps-shared-minime-1.0.0.tgz#9667d52b2b719b33835b944e82757d29849f7f52"
   integrity sha512-DC0ylnEcsqED8eQIxriDbRTmSmqdUYWJrGmysI/UTuHvdSfsAy9awbx4Ea6To1Acd3F6kca5oPn6m9WjCAhlxQ==
 
+"@aragon/apps-shared-minime@^1.0.2":
+  version "1.0.2"
+  resolved "https://registry.yarnpkg.com/@aragon/apps-shared-minime/-/apps-shared-minime-1.0.2.tgz#1388602be2b296de51e6c3712c80d669c1d2191e"
+  integrity sha512-HqvnjU4sF2swvOK3616cvuSs2sofegWd7qqT5iF0YTf9v0w/cAWoj7ZZK3TMVdsQv07HNvQjqucTGa3/qMzblA==
+
 "@aragon/apps-token-manager@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@aragon/apps-token-manager/-/apps-token-manager-2.1.0.tgz#09deb4a3353476e0c99153e496521eb82c2db14e"
@@ -19,11 +24,6 @@
   dependencies:
     "@aragon/apps-shared-minime" "1.0.0"
     "@aragon/os" "4.2.0"
-
-"@aragon/apps-shared-minime@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@aragon/apps-shared-minime/-/apps-shared-minime-1.0.2.tgz#1388602be2b296de51e6c3712c80d669c1d2191e"
-  integrity sha512-HqvnjU4sF2swvOK3616cvuSs2sofegWd7qqT5iF0YTf9v0w/cAWoj7ZZK3TMVdsQv07HNvQjqucTGa3/qMzblA==
 
 "@aragon/buidler-aragon@^0.2.2":
   version "0.2.3"
@@ -55,6 +55,11 @@
     web3-eth-abi "^1.2.1"
     web3-utils "^1.2.1"
 
+"@aragon/minime@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@aragon/minime/-/minime-1.0.0.tgz#994284b38e2ca36b5ae923f090928948041c928f"
+  integrity sha512-FU6xQXkkRfaxo0n6HEnlsizSA12Te2bghozqW9XLdDbzpC84yDeqUOQAxmrHo5yQPIezRfz7IrNzpLVL6ZBORA==
+
 "@aragon/os@4.2.0":
   version "4.2.0"
   resolved "https://registry.yarnpkg.com/@aragon/os/-/os-4.2.0.tgz#7758daa2dd6e2f1ad4c306aaa80ca6ebb0b6946c"
@@ -65,11 +70,6 @@
     truffle-flattener "^1.2.9"
     truffle-hdwallet-provider "0.0.3"
     truffle-hdwallet-provider-privkey "0.3.0"
-
-"@aragon/minime@^1.0.0":
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/@aragon/minime/-/minime-1.0.0.tgz#994284b38e2ca36b5ae923f090928948041c928f"
-  integrity sha512-FU6xQXkkRfaxo0n6HEnlsizSA12Te2bghozqW9XLdDbzpC84yDeqUOQAxmrHo5yQPIezRfz7IrNzpLVL6ZBORA==
 
 "@nomiclabs/buidler-etherscan@^1.0.2":
   version "1.2.0"
@@ -1422,6 +1422,11 @@ bn.js@4.11.8, bn.js@^4.0.0, bn.js@^4.1.0, bn.js@^4.1.1, bn.js@^4.10.0, bn.js@^4.
   version "4.11.8"
   resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-4.11.8.tgz#2cde09eb5ee341f484746bb0309b3253b1b1442f"
   integrity sha512-ItfYfPLkWHUjckQCk8xC+LwxgK8NYcXywGigJgSwOP8Y2iyWT4f2vsZnoOXTTbo+o5yXmIUJ4gn5538SO5S3gA==
+
+bn.js@^5.1.1:
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/bn.js/-/bn.js-5.1.1.tgz#48efc4031a9c4041b9c99c6941d903463ab62eb5"
+  integrity sha512-IUTD/REb78Z2eodka1QZyyEk66pciRcP6Sroka0aI3tG/iwIdYLrBD62RsubR7vqdt3WyX8p4jxeatzmRSphtA==
 
 body-parser@1.19.0, body-parser@^1.16.0:
   version "1.19.0"

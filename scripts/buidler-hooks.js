@@ -61,10 +61,12 @@ module.exports = {
     { proxy, _experimentalAppInstaller, log },
     { web3, artifacts }
   ) => {
-    // We need to create a permission for the Token Manager so it shows
-    // up on the DAO. Therefore, let's give unlimited inflational powers
-    // to the root account, because why not?
-    await tokens.createPermission('MINT_ROLE', accounts[1])
+    // The Issuance app needs to be able to mint tokens, due to the
+    // executePolicy() method being able to use the Token Manager instance
+    // to mint them.
+    log(`proxy address: ${proxy.address}`)
+    await tokens.createPermission('MINT_ROLE', proxy.address)
+    log(`Permission created for minting tokens `)
   },
 
   // Called when the start task needs to know the app proxy's init parameters.

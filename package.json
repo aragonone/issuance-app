@@ -15,9 +15,10 @@
   },
   "dependencies": {
     "@aragon/abis": "^1.1.0",
-    "@aragon/apps-token-manager": "^2.1.0",
     "@aragon/apps-shared-minime": "^1.0.2",
-    "@aragon/minime": "^1.0.0"
+    "@aragon/apps-token-manager": "^2.1.0",
+    "@aragon/minime": "^1.0.0",
+    "bn.js": "^5.1.1"
   },
   "devDependencies": {
     "@aragon/buidler-aragon": "^0.2.2",

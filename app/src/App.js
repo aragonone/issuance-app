@@ -10,7 +10,7 @@ import {
   GU,
   Header,
   IconAdd,
-  IconEnter,
+  IconFundraising,
   IconTrash,
   IdentityBadge,
   Main,
@@ -22,13 +22,25 @@ import {
 
 function App() {
   const { api, appState } = useAragonApi()
-
-  const { count, isSyncing } = appState
+  React.useEffect(() => {
+    console.log('appState', appState)
+  }, [appState])
+  const { policies, isSyncing } = appState
 
   const theme = useTheme()
   const { below } = useViewport()
 
   const compactMode = below('medium')
+
+  const handleAdd = React.useCallback(async () => {
+    const add = api
+      .addPolicy(
+        '0x8401Eb5ff34cc943f096A32EF3d5113FEbE8D4Eb',
+        '10000000000000000'
+      )
+      .toPromise()
+    console.log(add, 'add')
+  }, [api])
 
   return (
     <Main>
@@ -64,9 +76,9 @@ function App() {
             <Button
               mode="strong"
               label="Execute policies"
-              icon={<IconEnter />}
+              icon={<IconFundraising />}
               display={compactMode ? 'icon' : 'all'}
-              onClick={() => api.increment(1).toPromise()}
+              onClick={handleAdd}
               css={`
                 margin-right: ${1 * GU}px;
               `}
@@ -83,28 +95,24 @@ function App() {
       />
       <DataView
         fields={['Beneficiary', 'Rate']}
-        entries={[
-          { account: '0x5790dB5E4D9e868BB86F5280926b9838758234DD', rate: '5' },
-          { account: '0x5790dB5E4D9e868BB86F5280926b9838758234DD', rate: '5' },
-          { account: '0x5790dB5E4D9e868BB86F5280926b9838758234DD', rate: '5' },
-        ]}
-        renderEntry={({ account, rate }) => {
+        entries={policies}
+        renderEntry={({ beneficiary, blockInflationRate }) => {
           return [
-            <IdentityBadge entity={account} />,
+            <IdentityBadge entity={beneficiary} />,
             <div
               css={`
                 ${textStyle('body2')}
               `}
             >
-              {rate}%
+              {blockInflationRate}%
             </div>,
           ]
         }}
-        renderEntryActions={({ account, rate }, index) => {
+        renderEntryActions={({ policyid }, index) => {
           return (
             <ContextMenu>
               <ContextMenuItem
-                onClick={() => api.decrement(1).toPromise()}
+                onClick={() => api.removePolicy(0).toPromise()}
                 css={`
                   color: ${theme.negative};
                 `}
