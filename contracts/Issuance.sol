@@ -47,7 +47,7 @@ contract Issuance is AragonApp {
         initialized();
     }
 
-    /** 
+    /**
      * @notice Add a new issuance policy of `@formatPct(_blockInflationRate * self.BLOCKS_PER_YEAR(): uint256)` for `_beneficiary`
      * @param _beneficiary Address that will receive tokens minted from inflation
      * @param _blockInflationRate Percentage of the token's total supply that will be issued per block (expressed as a percentage of 10^18; eg. 10^16 = 1%, 10^18 = 100%)
@@ -87,10 +87,10 @@ contract Issuance is AragonApp {
                 break;
             }
         }
-        
+
         emit RemovePolicy(_policyId);
     }
-    
+
     /**
      * @notice Execute minting for all issuance policies
      */
@@ -100,7 +100,7 @@ contract Issuance is AragonApp {
         if (elapsedBlocks == 0) {
             return;
         }
-        
+
         lastMintBlockNumber = currentBlockNumber;
 
         uint256 currentSupply = token.totalSupply();
@@ -109,7 +109,7 @@ contract Issuance is AragonApp {
         if (activePolicyIdsLength == 0) {
             return;
         }
-        
+
         for (uint256 i = 0; i < activePolicyIdsLength; i++) {
             Policy storage policy = policies[activePolicyIds[i]];
             uint256 mintAmount = _calculateMintAmountForPolicy(policy, currentSupply, elapsedBlocks);
@@ -117,7 +117,7 @@ contract Issuance is AragonApp {
             tokenManager.mint(policy.beneficiary, mintAmount);
             totalMinted = totalMinted.add(mintAmount);
         }
-        
+
         emit ExecuteIssuance(totalMinted, elapsedBlocks);
     }
 
