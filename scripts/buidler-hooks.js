@@ -70,7 +70,11 @@ module.exports = {
   // Called when the start task needs to know the app proxy's init parameters.
   // Must return an array with the proxy's init parameters.
   getInitParams: async ({ log }, { web3, artifacts }) => {
-    return [42]
+    // The Issuance contract requires a Token Manager instance,
+    // so we'll pass in the address of the deployed Token Manager
+    // as the first and only parameter needed for the initialize
+    // function
+    return [tokens.address]
   },
 
   // Called after the app's proxy is updated with a new implementation.
