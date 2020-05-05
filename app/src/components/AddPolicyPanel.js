@@ -26,7 +26,7 @@ export default function AddPolicyPanel({ onAdd, onClose, opened }) {
   })
 
   return (
-    <SidePanel onClose={onClose} opened={opened}>
+    <SidePanel onClose={onClose} opened={opened} title="Add new policy">
       <div
         css={`
           margin-top: ${2 * GU}px;
