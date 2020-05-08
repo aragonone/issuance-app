@@ -18,7 +18,8 @@
     "@aragon/apps-shared-minime": "^1.0.2",
     "@aragon/apps-token-manager": "^2.1.0",
     "@aragon/minime": "^1.0.0",
-    "bn.js": "^5.1.1"
+    "bn.js": "^5.1.1",
+    "web3-utils": "^1.2.7"
   },
   "devDependencies": {
     "@aragon/buidler-aragon": "^0.2.2",

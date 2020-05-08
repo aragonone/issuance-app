@@ -50,7 +50,6 @@ retryEvery(() =>
 )
 
 async function initialize(tokenAddress) {
-
   function reducer(state, event) {
     const nextState = {
       ...state,
@@ -99,11 +98,11 @@ function initializeState({ tokenAddress }) {
   }
 }
 
-async function newAddedPolicy(state, event) {
+function newAddedPolicy(state, event) {
   const { event: eventName } = event
   const { beneficiary, blockInflationRate, policyId } = event.returnValues
 
-  const newPolicies = await updatePolicies(state.policies, eventName, {
+  const newPolicies = updatePolicies(state.policies, eventName, {
     beneficiary,
     blockInflationRate,
     policyId,
@@ -115,10 +114,10 @@ async function newAddedPolicy(state, event) {
   }
 }
 
-async function newRemovedPolicy(state, event) {
+function newRemovedPolicy(state, event) {
   const { policyId } = event.returnValues
   const { event: eventName } = event
-  const newPolicies = await updatePolicies(state.policies, eventName, { policyId })
+  const newPolicies = updatePolicies(state.policies, eventName, { policyId })
 
   return {
     ...state,
@@ -126,9 +125,9 @@ async function newRemovedPolicy(state, event) {
   }
 }
 
-async function newIssuanceExecuted(state, event) {
+function newIssuanceExecuted(state, event) {
   const { event: eventName } = event
-  const newPolicies = await updatePolicies(state.policies, eventName)
+  const newPolicies = updatePolicies(state.policies, eventName)
 
   return {
     ...state,
@@ -136,7 +135,7 @@ async function newIssuanceExecuted(state, event) {
   }
 }
 
-async function updatePolicies(policies, event, config) {
+function updatePolicies(policies, event, config) {
   switch (event) {
     case 'AddPolicy':
       return addNewPolicy(policies, config)

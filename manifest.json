@@ -1,16 +1,16 @@
 {
-  "name": "issuance-policy",
-  "author": "Placeholder-author",
-  "description": "An application for Aragon",
+  "name": "Issuance",
+  "author": "10k DAOs team",
+  "description": "Simple app for creating and executing Issuance policies",
   "details_url": "/meta/details.md",
   "source_url": "https://<placeholder-repository-url>",
   "icons": [
     {
-      "src": "/meta/icon.svg",
+      "src": "/meta/issuance.svg",
       "sizes": "56x56"
     }
   ],
-  "screenshots": [{ "src": "/meta/screenshot-1.png" }],
+  "screenshots": [{"src": "/meta/screenshot-1.png"}],
   "start_url": "/index.html",
   "script": "/script.js"
 }

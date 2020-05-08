@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useMemo } from 'react'
 import { useViewport } from 'use-viewport'
 import { useAragonApi } from '@aragon/api-react'
 import {
@@ -8,6 +8,7 @@ import {
   DataView,
   GU,
   Header,
+  Help,
   IconAdd,
   IconFundraising,
   IconTrash,
@@ -34,13 +35,8 @@ function App() {
   const compactMode = below('medium')
 
   const handleAdd = React.useCallback(
-    async (beneficiary, inflationRate) => {
-      api
-        .addPolicy(
-          beneficiary,
-          inflationRate
-        )
-        .toPromise()
+    (beneficiary, inflationRate) => {
+      return api.addPolicy(beneficiary, inflationRate).toPromise()
     },
     [api]
   )
@@ -61,6 +57,8 @@ function App() {
     () => setAddPolicyPanelOpen(false),
     []
   )
+
+  const executeDisabled = useMemo(() => policies.length === 0, [policies])
 
   return (
     <Main>
@@ -99,11 +97,11 @@ function App() {
         secondary={
           <>
             <Button
-              mode="strong"
               label="Execute policies"
               icon={<IconFundraising />}
               display={compactMode ? 'icon' : 'all'}
               onClick={handleExecute}
+              disabled={executeDisabled}
               css={`
                 margin-right: ${1 * GU}px;
               `}
@@ -119,9 +117,27 @@ function App() {
         }
       />
       <DataView
-        fields={['Beneficiary', 'Rate', 'State']}
+        fields={[
+          'Beneficiary',
+          <span
+            css={`
+              display: inline-flex;
+              align-items: center;
+            `}
+          >
+            <span css="margin: 2px 5px 0 0;">Rate</span>
+            <span css="margin-right: 2px">
+              <Help hint="What's the rate?">
+                Rate the is approximation of the annual issuance of a single
+                policy without accounting for compounding or other changes to
+                total supply, the actual rate of issuance depends on total
+                supply each time the policy is executed.
+              </Help>
+            </span>
+          </span>,
+        ]}
         entries={policies}
-        renderEntry={({ beneficiary, blockInflationRate, executed }) => {
+        renderEntry={({ beneficiary, blockInflationRate }) => {
           return [
             <IdentityBadge entity={beneficiary} />,
             <div
@@ -131,21 +147,9 @@ function App() {
             >
               {blockInflationRate}%
             </div>,
-            <div
-              css={`
-              ${textStyle('label2')}
-              color: ${executed ? theme.positive : theme.warning}
-            `}
-            >
-              {executed ? 'Executed' : 'Awaiting'}
-            </div>,
           ]
         }}
-        renderEntryActions={({ executed, id }) => {
-          if (executed) {
-            return null
-          }
-
+        renderEntryActions={({ id }) => {
           return (
             <ContextMenu>
               <ContextMenuItem
