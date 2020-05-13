@@ -48,7 +48,7 @@ contract Issuance is AragonApp {
     }
 
     /**
-     * @notice Add a new issuance policy of `@formatPct(_blockInflationRate * self.BLOCKS_PER_YEAR(): uint256)` for `_beneficiary`
+     * @notice Add a new issuance policy of `@formatPct(_blockInflationRate * self.BLOCKS_PER_YEAR(): uint256)`% for `_beneficiary`
      * @param _beneficiary Address that will receive tokens minted from inflation
      * @param _blockInflationRate Percentage of the token's total supply that will be issued per block (expressed as a percentage of 10^18; eg. 10^16 = 1%, 10^18 = 100%)
      */
