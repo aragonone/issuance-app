@@ -23,9 +23,9 @@ import AddPolicyPanel from './components/AddPolicyPanel'
 
 function App() {
   const [addPolicyPanelOpen, setAddPolicyPanelOpen] = useState(false)
-  const { api, appState } = useAragonApi()
+  const { api, appState, guiStyle } = useAragonApi()
   const { policies, isSyncing, tokenSymbol } = appState
-
+  const { appearance } = guiStyle
   const theme = useTheme()
   const { below } = useViewport()
 
@@ -58,7 +58,7 @@ function App() {
   const executeDisabled = useMemo(() => policies.length === 0, [policies])
 
   return (
-    <Main>
+    <Main theme={appearance}>
       {isSyncing && <SyncIndicator />}
       <AddPolicyPanel
         onAdd={handleAdd}
