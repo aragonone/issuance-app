@@ -24,9 +24,6 @@ import AddPolicyPanel from './components/AddPolicyPanel'
 function App() {
   const [addPolicyPanelOpen, setAddPolicyPanelOpen] = useState(false)
   const { api, appState } = useAragonApi()
-  React.useEffect(() => {
-    console.log('appState', appState)
-  }, [appState])
   const { policies, isSyncing, tokenSymbol } = appState
 
   const theme = useTheme()

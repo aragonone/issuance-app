@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
 import BN from 'bn.js'
 import { isAddress } from 'web3-utils'
 import { Button, Field, Info, SidePanel, TextInput, GU } from '@aragon/ui'
-import { PCT_BASE } from '../lib/constants'
+import { BLOCKS_PER_YEAR, PCT_BASE } from '../lib/constants'
 
 export default function AddPolicyPanel({ onAdd, onClose, opened }) {
   const [beneficiary, setBeneficiary] = useState('')
@@ -27,7 +27,15 @@ export default function AddPolicyPanel({ onAdd, onClose, opened }) {
 
   const handleAddPolicy = useCallback(() => {
     const preparedInflationRate = new BN(inflationRate)
-      .mul(new BN(PCT_BASE))
+      .mul(PCT_BASE)
+      // On this:
+      // Due to not having decimals, precision is lost due to the division
+      // that happens below. To avoid always having the issue of setting, for
+      // example, a 50% policy, but on the radspec handler and the policy rate itself
+      // being 49.99%, we add BLOCKS_PER_YEAR to the above number to force
+      // "ceiling", instead of "flooring".
+      .add(BLOCKS_PER_YEAR)
+      .div(BLOCKS_PER_YEAR)
       .toString()
     onAdd(beneficiary, preparedInflationRate).then(() => handleClose())
   })

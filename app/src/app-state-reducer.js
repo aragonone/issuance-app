@@ -1,6 +1,5 @@
 import BN from 'bn.js'
-
-const PCT_BASE = new BN('10000000000000000')
+import { BLOCKS_PER_YEAR, PCT_BASE } from './lib/constants.js'
 
 function normalizeInflationRate(policies) {
   const policiesWithBN = policies.map(policy => ({
@@ -10,7 +9,10 @@ function normalizeInflationRate(policies) {
 
   return policiesWithBN.map(policy => ({
     ...policy,
-    blockInflationRate: policy.blockInflationRate.div(PCT_BASE).toString(),
+    blockInflationRate: policy.blockInflationRate
+      .mul(BLOCKS_PER_YEAR)
+      .div(PCT_BASE)
+      .toString(),
   }))
 }
 
