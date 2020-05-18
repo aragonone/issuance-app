@@ -5,6 +5,7 @@
   "scripts": {
     "postinstall": "yarn compile && yarn copy-artifacts && yarn build-app",
     "copy-artifacts": "cp -R node_modules/@aragon/abis/os/artifacts/. artifacts/.",
+    "build": "yarn build-app",
     "build-app": "cd app && yarn install && cd ..",
     "compile": "buidler compile --force",
     "test": "buidler test --network buidlerevm",
@@ -20,6 +21,7 @@
     "@aragon/minime": "^1.0.0",
     "@aragon/truffle-config-v5": "^1.0.1",
     "bn.js": "^5.1.1",
+    "ethers-utils": "^2.1.11",
     "web3-utils": "^1.2.7"
   },
   "devDependencies": {

@@ -54,7 +54,6 @@ async function initialize(tokenAddress) {
     const nextState = {
       ...state,
     }
-
     if (event === events.SYNC_STATUS_SYNCING) {
       return { ...nextState, isSyncing: true }
     } else if (event === events.SYNC_STATUS_SYNCED) {
@@ -68,8 +67,6 @@ async function initialize(tokenAddress) {
         return newAddedPolicy(nextState, event)
       case 'RemovePolicy':
         return newRemovedPolicy(nextState, event)
-      case 'ExecuteIssuance':
-        return newIssuanceExecuted(nextState, event)
       default:
         return nextState
     }
@@ -92,7 +89,6 @@ function initializeState({ tokenAddress }) {
 
     return {
       ...cachedState,
-      policies: [],
       tokenSymbol,
     }
   }
@@ -125,37 +121,23 @@ function newRemovedPolicy(state, event) {
   }
 }
 
-function newIssuanceExecuted(state, event) {
-  const { event: eventName } = event
-  const newPolicies = updatePolicies(state.policies, eventName)
-
-  return {
-    ...state,
-    policies: newPolicies,
-  }
-}
-
 function updatePolicies(policies, event, config) {
   switch (event) {
     case 'AddPolicy':
       return addNewPolicy(policies, config)
     case 'RemovePolicy':
       return removePolicy(policies, config)
-    case 'ExecuteIssuance':
-      return markIssuancesAsExecuted(policies)
   }
 }
 
 function addNewPolicy(policies, { beneficiary, blockInflationRate, policyId }) {
-  return policies.concat([
-    { beneficiary, blockInflationRate, id: policyId, executed: false },
-  ])
+  if (!policies) {
+    return [{ beneficiary, blockInflationRate, id: policyId }]
+  }
+
+  return policies.concat([{ beneficiary, blockInflationRate, id: policyId }])
 }
 
 function removePolicy(policies, { policyId }) {
   return policies.filter(policy => policy.id !== policyId)
-}
-
-function markIssuancesAsExecuted(policies) {
-  return policies.map(policy => ({ ...policy, executed: true }))
 }

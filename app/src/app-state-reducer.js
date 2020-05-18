@@ -1,18 +1,18 @@
 import BN from 'bn.js'
 import { BLOCKS_PER_YEAR, PCT_BASE } from './lib/constants.js'
+import { formatUnits } from './lib/web3-utils'
 
 function normalizeInflationRate(policies) {
-  const policiesWithBN = policies.map(policy => ({
+  const preparedPolicies = policies.map(policy => ({
     ...policy,
-    blockInflationRate: new BN(policy.blockInflationRate),
+    blockInflationRate: formatUnits(
+      new BN(policy.blockInflationRate).mul(BLOCKS_PER_YEAR)
+    ),
   }))
 
-  return policiesWithBN.map(policy => ({
+  return preparedPolicies.map(policy => ({
     ...policy,
-    blockInflationRate: policy.blockInflationRate
-      .mul(BLOCKS_PER_YEAR)
-      .div(PCT_BASE)
-      .toString(),
+    blockInflationRate: (Number(policy.blockInflationRate) * 100).toFixed(2),
   }))
 }
 
@@ -27,7 +27,7 @@ export default function AppStateReducer(state) {
     return { policies: [], isSyncing: true, tokenSymbol: null }
   }
 
-  const normalizedPolicies = normalizeInflationRate(state.policies)
+  const normalizedPolicies = normalizeInflationRate(state.policies || [])
   const sortedPolicies = sortPolicies(normalizedPolicies)
   return { ...state, policies: sortedPolicies }
 }
