@@ -1,13 +1,12 @@
 import React, { useState, useEffect, useCallback, useMemo, useRef } from 'react'
-import BN from 'bn.js'
 import { isAddress } from 'web3-utils'
 import { Button, Field, Info, SidePanel, TextInput, GU } from '@aragon/ui'
-import { BLOCKS_PER_YEAR, PCT_BASE } from '../lib/constants'
+import { BLOCKS_PER_YEAR, ETHERS_BASE_DIGITS } from '../lib/constants'
+import { parseUnits } from '../lib/web3-utils'
 
 export default function AddPolicyPanel({ onAdd, onClose, opened }) {
   const [beneficiary, setBeneficiary] = useState('')
   const [inflationRate, setInflationRate] = useState('')
-  const firstRender = useRef(true)
 
   const handleBeneficiaryChange = useCallback(
     e => setBeneficiary(e.target.value),
@@ -26,8 +25,9 @@ export default function AddPolicyPanel({ onAdd, onClose, opened }) {
   }, [])
 
   const handleAddPolicy = useCallback(() => {
-    const preparedInflationRate = new BN(inflationRate)
-      .mul(PCT_BASE)
+    const parsedInflationRate = parseUnits(inflationRate)
+    const preparedInflationRate = parsedInflationRate
+      .div(100)
       // On this:
       // Due to not having decimals, precision is lost due to the division
       // that happens below. To avoid always having the issue of setting, for

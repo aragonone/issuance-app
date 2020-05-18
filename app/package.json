@@ -45,6 +45,7 @@
     "serve": "parcel serve index.html --out-dir ../dist/ --no-cache",
     "watch": "yarn watch:script",
     "sync-assets": "copy-aragon-ui-assets ../dist && copyfiles -u 1 './public/**/*' ../dist",
+    "devserver": "parcel serve index.html -p 3010 --out-dir ../dist/",
     "start": "yarn sync-assets && yarn watch:script & yarn devserver"
   }
 }
