@@ -2,6 +2,7 @@ const { usePlugin } = require('@nomiclabs/buidler/config')
 const hooks = require('./scripts/buidler-hooks')
 
 usePlugin('@aragon/buidler-aragon')
+usePlugin('buidler-gas-reporter')
 
 module.exports = {
   // Default Buidler configurations. Read more about it at https://buidler.dev/config/
@@ -10,6 +11,15 @@ module.exports = {
     localhost: {
       url: 'http://localhost:8545',
     },
+    xdai:{
+      url: 'https://xdai.poanetwork.dev',
+      accounts: ACCOUNTS,
+      gasPrice: 20,
+      gas: 12000000,
+    },
+    coverage: {
+      url: 'http://localhost:8555',
+    },
   },
   solc: {
     version: '0.4.24',
@@ -17,6 +27,9 @@ module.exports = {
       enabled: true,
       runs: 10000,
     },
+  },
+  gasReporter: {
+    enabled: process.env.GAS_REPORTER ? true : false,
   },
   // Etherscan plugin configuration. Learn more at https://github.com/nomiclabs/buidler/tree/master/packages/buidler-etherscan
   etherscan: {
