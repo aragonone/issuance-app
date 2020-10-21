@@ -4,6 +4,9 @@ const hooks = require('./scripts/buidler-hooks')
 usePlugin('@aragon/buidler-aragon')
 usePlugin('buidler-gas-reporter')
 
+const ACCOUNTS = (process.env.ETH_KEYS ? process.env.ETH_KEYS.split(',') : [])
+  .map(key => key.trim())
+
 module.exports = {
   // Default Buidler configurations. Read more about it at https://buidler.dev/config/
   defaultNetwork: 'localhost',
